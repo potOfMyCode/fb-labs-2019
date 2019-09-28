@@ -1,0 +1,213 @@
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class Main {
+    private final static int CAPACITY = 32;
+
+    private static Map<Character, Integer> alphabet = new TreeMap<>();
+
+    private static Map<Character, Integer> alphabetWithoutSpace = new TreeMap<>();
+
+    private static Map<String, Integer> alphabetForBigramm = new TreeMap<>();
+
+    private static Map<String, Integer> alphabetForBigrammWithouSpace = new TreeMap<>();
+
+    private static StringBuffer getFileContent(){
+        StringBuffer fileData = new StringBuffer();
+        try(FileReader reader = new FileReader("graf-monte-kristo.txt")){
+            int c;
+            while((c=reader.read())!=-1){
+                if(((c >= 1072) && (c<=1097))||((c >= 1099)&&(c <= 1103))||(c == 32)||((c >= 1040) && (c<=1065))||((c >= 1067)&&(c <= 1071))) {
+                    if (((c >= 1040) && (c<=1065))||((c >= 1067)&&(c <= 1071)))
+                        c += 32;
+                    if (c == ' ') {
+                        c = '0';
+                        if (fileData.charAt(fileData.length() - 1) == '0')
+                            continue;
+                    }
+                    fileData.append((char) c);
+                }
+            }
+        }catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
+
+        return fileData;
+    }
+
+    private static void initAlphabet(StringBuffer fileData, Map<Character, Integer> alphabet){
+        for (int i=0; i<fileData.length(); i++){
+            char symbol = fileData.charAt(i);
+            int temp = alphabet.getOrDefault(symbol, 0);
+            temp++;
+
+            alphabet.put(symbol, temp);
+        }
+    }
+
+    private static void initAlphabetForBigram(StringBuffer fileData, Map<String, Integer> alphabet){
+        for (int i=0; i<fileData.length()-3; i+=2){
+            String bigram = fileData.substring(i, i+2);
+
+            int temp = alphabet.getOrDefault(bigram, 0);
+            temp++;
+
+            alphabet.put(bigram, temp);
+        }
+    }
+
+    private static void deleteSpaceFromBuffer(StringBuffer fileData, StringBuffer fileDataWithouSpace){
+        for (int i=0; i<fileData.length(); i++){
+            if (fileData.charAt(i) != '0')
+                fileDataWithouSpace.append(fileData.charAt(i));
+        }
+    }
+
+    private static void printMap(String desc, Map map){
+        System.out.println();
+        System.out.println(desc);
+        System.out.println(map);
+    }
+
+    private static void initArray(String[][] array){
+        String[] alpha ={"0","а","б","в","г","д","е","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ы","ь","э","ю","я"};
+        for(int column = 1; column<33; column++){
+            array[0][column] = alpha[column-1];
+        }
+
+        for(int row = 1; row <33; row++){
+            array[row][0] = alpha[row-1];
+        }
+        array[0][0] = "   ";
+
+        for (int row =1; row<33; row++){
+            for (int column =1; column<33; column++){
+                String key = array[row][0] + array[0][column];
+                String result;
+                if (alphabetForBigramm.get(key) != null)
+                    result = Integer.toString(alphabetForBigramm.get(key));
+                else
+                    result = Integer.toString(0);
+                array[row][column] = result;
+            }
+        }
+
+    }
+
+    private static void showArray(String[][] array){
+        System.out.println();
+        for (int i = 0; i < 33; i++) {
+            for (int j = 0; j <33; j++) {
+                System.out.print(array[i][j] + "    ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        StringBuffer fileData;
+        fileData = getFileContent();
+
+        initAlphabet(fileData, alphabet);
+
+        int total = fileData.length();
+        System.out.println("total: " + total);
+
+        printMap("Alphabet:", alphabet);
+
+        initAlphabetForBigram(fileData, alphabetForBigramm);
+
+        printMap("Bigram: ", alphabetForBigramm);
+
+        StringBuffer fileDataWithouSpace = new StringBuffer();
+
+        deleteSpaceFromBuffer(fileData, fileDataWithouSpace);
+
+        initAlphabet(fileDataWithouSpace, alphabetWithoutSpace);
+
+        int totalWithoutSpace = fileDataWithouSpace.length();
+        System.out.println("total without spaces: " + totalWithoutSpace);
+
+        printMap("Alphabet without space:", alphabetWithoutSpace);
+
+        initAlphabetForBigram(fileDataWithouSpace, alphabetForBigrammWithouSpace);
+
+        printMap("Bigram without space:", alphabetForBigrammWithouSpace);
+
+        String[][] array = new String[33][33];
+
+        initArray(array);
+
+//        showArray(array);
+
+        double entropyAlphabet = calculateAndShowEntropyAlphabet(alphabet, total, "entropyAlphabet: ");
+
+        double entropyAlphabetWithoutSpace = calculateAndShowEntropyAlphabet(alphabetWithoutSpace, totalWithoutSpace, "entropyAlphabetWithoutSpace: ");
+
+        double entropyAlphabetForBigram = calculateAndShowEntropyAlphabetBigram(alphabetForBigramm, total, "entropyAlphabetForBigram: ");
+
+        double entropyAlphabetForBigramWithoutSpace = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammWithouSpace, totalWithoutSpace, "entropyAlphabetForBigramWithoutSpace: ");
+
+
+        System.out.println("--------------------Task_3----------------------------");
+        System.out.println();
+
+        double entropyIdeal= Math.log(total)/Math.log(2);
+        printDouble("entropyIdeal: ", entropyIdeal);
+
+        double entropyIdealWithoutSpaces = Math.log(totalWithoutSpace)/Math.log(2);
+        printDouble("entropyIdealWithoutSpaces: ", entropyIdealWithoutSpaces);
+
+        double rForAlphabet = 1 - (entropyAlphabet/entropyIdeal);
+        printDouble("R for alphabet for text with spaces:", rForAlphabet);
+
+        double rForAlphabetWithoutSpaces = 1 - (entropyAlphabetWithoutSpace/entropyIdealWithoutSpaces);
+        printDouble("R for alphabet for text without spaces:", rForAlphabetWithoutSpaces);
+
+        double rForAlphabetForBigram = 1 - (entropyAlphabetForBigram/entropyIdeal);
+        printDouble("R for alphabet for bigram for text with spaces:", rForAlphabetForBigram);
+
+        double rForAlphabetForBigramWithoutSpaces = 1 - (entropyAlphabetForBigramWithoutSpace/entropyIdealWithoutSpaces);
+        printDouble("R for alphabet for bigram for text without spaces:", rForAlphabetForBigramWithoutSpaces);
+
+    }
+    private static void printDouble(String desc, double statement){
+        System.out.println(desc + statement);
+        System.out.println();
+    }
+
+    private static double calculateAndShowEntropyAlphabet(Map<Character, Integer> alphabet, int total, String desc){
+        double entropyAlphabet = 0;
+
+        for (char c : alphabet.keySet()){
+            double probability = (double)alphabet.get(c)/total;
+            entropyAlphabet += probability*(Math.log(probability)/Math.log(2));
+        }
+
+        entropyAlphabet = Math.abs(entropyAlphabet);
+
+        System.out.println(desc + entropyAlphabet);
+        System.out.println();
+
+        return entropyAlphabet;
+    }
+
+    private static double calculateAndShowEntropyAlphabetBigram(Map<String, Integer> alphabet, int total, String desc){
+        double entropyAlphabet = 0;
+
+        for (String s : alphabet.keySet()){
+            double probability = (double)alphabet.get(s)/total;
+            entropyAlphabet += probability*(Math.log(probability)/Math.log(2));
+        }
+
+        entropyAlphabet = Math.abs(entropyAlphabet);
+
+        System.out.println(desc + entropyAlphabet);
+        System.out.println();
+
+        return entropyAlphabet;
+    }
+
+}
