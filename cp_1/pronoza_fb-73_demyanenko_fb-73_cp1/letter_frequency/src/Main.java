@@ -152,7 +152,7 @@ public class Main {
         showArray(array);
         System.out.println();
 
-        System.out.println("Array for bigram with spaces: ");
+        System.out.println("Array for bigram without spaces: ");
         showArray(arrayWithoutSpaces);
         System.out.println();
 
