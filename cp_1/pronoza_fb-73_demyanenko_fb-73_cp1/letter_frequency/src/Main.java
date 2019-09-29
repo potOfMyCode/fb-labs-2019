@@ -14,6 +14,10 @@ public class Main {
 
     private static Map<String, Integer> alphabetForBigrammWithouSpace = new TreeMap<>();
 
+    private static Map<String, Integer> alphabetForBigrammSingleStep= new TreeMap<>();
+
+    private static Map<String, Integer> alphabetForBigrammWithouSpaceSingleStep = new TreeMap<>();
+
     private static StringBuffer getFileContent(){
         StringBuffer fileData = new StringBuffer();
         try(FileReader reader = new FileReader("graf-monte-kristo.txt")){
@@ -47,8 +51,8 @@ public class Main {
         }
     }
 
-    private static void initAlphabetForBigram(StringBuffer fileData, Map<String, Integer> alphabet){
-        for (int i=0; i<fileData.length()-3; i+=2){
+    private static void initAlphabetForBigram(StringBuffer fileData, Map<String, Integer> alphabet, int step){
+        for (int i=0; i<fileData.length()-3; i+=step){
             String bigram = fileData.substring(i, i+2);
 
             int temp = alphabet.getOrDefault(bigram, 0);
@@ -116,7 +120,8 @@ public class Main {
 
         printMap("Alphabet:", alphabet);
 
-        initAlphabetForBigram(fileData, alphabetForBigramm);
+        initAlphabetForBigram(fileData, alphabetForBigramm, 2);
+        initAlphabetForBigram(fileData, alphabetForBigrammSingleStep, 1);
 
         printMap("Bigram: ", alphabetForBigramm);
 
@@ -131,7 +136,8 @@ public class Main {
 
         printMap("Alphabet without space:", alphabetWithoutSpace);
 
-        initAlphabetForBigram(fileDataWithouSpace, alphabetForBigrammWithouSpace);
+        initAlphabetForBigram(fileDataWithouSpace, alphabetForBigrammWithouSpace, 2);
+        initAlphabetForBigram(fileDataWithouSpace, alphabetForBigrammWithouSpaceSingleStep, 1);
 
         printMap("Bigram without space:", alphabetForBigrammWithouSpace);
 
@@ -148,12 +154,28 @@ public class Main {
         initArray(arrayWithoutSpaces, alphWithoutSpaces, alphabetForBigrammWithouSpace);
 
         System.out.println();
-        System.out.println("Array for bigram with spaces: ");
+
+        System.out.println("Array for bigram with spaces for step = 2 : ");
         showArray(array);
         System.out.println();
 
-        System.out.println("Array for bigram without spaces: ");
+        System.out.println("Array for bigram without spaces for step = 2: ");
         showArray(arrayWithoutSpaces);
+        System.out.println();
+
+        String[][] arraySingleStep = new String[33][33];
+        String[][] arrayWithoutSpacesSingleStep = new String[32][32];
+
+        initArray(arraySingleStep, alpha, alphabetForBigrammSingleStep);
+        initArray(arrayWithoutSpacesSingleStep, alphWithoutSpaces, alphabetForBigrammWithouSpaceSingleStep);
+
+        System.out.println();
+        System.out.println("Array for bigram with spaces for step =1 : ");
+        showArray(arraySingleStep);
+        System.out.println();
+
+        System.out.println("Array for bigram without spaces for step =1: ");
+        showArray(arrayWithoutSpacesSingleStep);
         System.out.println();
 
         double entropyAlphabet = calculateAndShowEntropyAlphabet(alphabet, total, "entropyAlphabet: ");
@@ -163,6 +185,10 @@ public class Main {
         double entropyAlphabetForBigram = calculateAndShowEntropyAlphabetBigram(alphabetForBigramm, total, "entropyAlphabetForBigram: ");
 
         double entropyAlphabetForBigramWithoutSpace = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammWithouSpace, totalWithoutSpace, "entropyAlphabetForBigramWithoutSpace: ");
+
+        double entropyAlphabetForBigramSingleStep = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammSingleStep, total, "entropyAlphabetForBigramSingleStep: ");
+
+        double entropyAlphabetForBigramWithoutSpaceSingleStep = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammWithouSpaceSingleStep, totalWithoutSpace, "entropyAlphabetForBigramWithoutSpaceSingleStep: ");
 
 
         System.out.println("--------------------Task_3----------------------------");
@@ -185,6 +211,12 @@ public class Main {
 
         double rForAlphabetForBigramWithoutSpaces = 1 - (entropyAlphabetForBigramWithoutSpace/entropyIdealWithoutSpaces);
         printDouble("R for alphabet for bigram for text without spaces:", rForAlphabetForBigramWithoutSpaces);
+
+        double rForAlphabetForBigramSingleStep = 1 - (entropyAlphabetForBigramSingleStep/entropyIdeal);
+        printDouble("R for alphabet for bigram single step for text with spaces:", rForAlphabetForBigramSingleStep);
+
+        double rForAlphabetForBigramWithoutSpacesSingleStep = 1 - (entropyAlphabetForBigramWithoutSpaceSingleStep/entropyIdealWithoutSpaces);
+        printDouble("R for alphabet for bigram single step for text without spaces:", rForAlphabetForBigramWithoutSpacesSingleStep);
 
     }
     private static void printDouble(String desc, double statement){
