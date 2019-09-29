@@ -71,23 +71,22 @@ public class Main {
         System.out.println(map);
     }
 
-    private static void initArray(String[][] array){
-        String[] alpha ={"0","а","б","в","г","д","е","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ы","ь","э","ю","я"};
-        for(int column = 1; column<33; column++){
+    private static void initArray(String[][] array, String[] alpha, Map<String, Integer> alphabet){
+        for(int column = 1; column<array.length; column++){
             array[0][column] = alpha[column-1];
         }
 
-        for(int row = 1; row <33; row++){
+        for(int row = 1; row <array.length; row++){
             array[row][0] = alpha[row-1];
         }
         array[0][0] = "   ";
 
-        for (int row =1; row<33; row++){
-            for (int column =1; column<33; column++){
+        for (int row =1; row<array.length; row++){
+            for (int column =1; column<array.length; column++){
                 String key = array[row][0] + array[0][column];
                 String result;
-                if (alphabetForBigramm.get(key) != null)
-                    result = Integer.toString(alphabetForBigramm.get(key));
+                if (alphabet.get(key) != null)
+                    result = Integer.toString(alphabet.get(key));
                 else
                     result = Integer.toString(0);
                 array[row][column] = result;
@@ -98,8 +97,8 @@ public class Main {
 
     private static void showArray(String[][] array){
         System.out.println();
-        for (int i = 0; i < 33; i++) {
-            for (int j = 0; j <33; j++) {
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j <array.length; j++) {
                 System.out.print(array[i][j] + "    ");
             }
             System.out.println();
@@ -138,9 +137,24 @@ public class Main {
 
         String[][] array = new String[33][33];
 
-        initArray(array);
+        String[] alpha ={"0","а","б","в","г","д","е","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ы","ь","э","ю","я"};
 
-//        showArray(array);
+        initArray(array, alpha, alphabetForBigramm);
+
+        String[][] arrayWithoutSpaces = new String[32][32];
+
+        String[] alphWithoutSpaces ={"а","б","в","г","д","е","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ц","ч","ш","щ","ы","ь","э","ю","я"};
+
+        initArray(arrayWithoutSpaces, alphWithoutSpaces, alphabetForBigrammWithouSpace);
+
+        System.out.println();
+        System.out.println("Array for bigram with spaces: ");
+        showArray(array);
+        System.out.println();
+
+        System.out.println("Array for bigram with spaces: ");
+        showArray(arrayWithoutSpaces);
+        System.out.println();
 
         double entropyAlphabet = calculateAndShowEntropyAlphabet(alphabet, total, "entropyAlphabet: ");
 
