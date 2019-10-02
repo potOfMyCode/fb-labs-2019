@@ -109,6 +109,14 @@ public class Main {
         }
     }
 
+    private static int countAmountBigram(StringBuffer fileData, int step){
+        int result = 0;
+        for (int i=0; i<fileData.length()-3; i+=step){
+            result++;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         StringBuffer fileData;
         fileData = getFileContent();
@@ -133,6 +141,18 @@ public class Main {
 
         int totalWithoutSpace = fileDataWithouSpace.length();
         System.out.println("total without spaces: " + totalWithoutSpace);
+
+        int totalForBigramDoubleStep = countAmountBigram(fileData, 2);
+        System.out.println("total for bigram double step: " + totalForBigramDoubleStep);
+
+        int totalForBigramSingleStep = countAmountBigram(fileData, 1);
+        System.out.println(" total for bigram single step: " + totalForBigramSingleStep);
+
+        int totalForBigramWithoutSpacesDoubleStep = countAmountBigram(fileDataWithouSpace,2);
+        System.out.println("total for bigram without spaces double step: " + totalForBigramWithoutSpacesDoubleStep);
+
+        int totalForBigramWithoutSpacesSingleStep = countAmountBigram(fileDataWithouSpace, 1);
+        System.out.println("total for bigram without spaces single step: " + totalForBigramWithoutSpacesSingleStep);
 
         printMap("Alphabet without space:", alphabetWithoutSpace);
 
@@ -182,13 +202,13 @@ public class Main {
 
         double entropyAlphabetWithoutSpace = calculateAndShowEntropyAlphabet(alphabetWithoutSpace, totalWithoutSpace, "entropyAlphabetWithoutSpace: ");
 
-        double entropyAlphabetForBigram = calculateAndShowEntropyAlphabetBigram(alphabetForBigramm, total, "entropyAlphabetForBigram: ");
+        double entropyAlphabetForBigram = calculateAndShowEntropyAlphabetBigram(alphabetForBigramm, totalForBigramDoubleStep, "entropyAlphabetForBigram: ");
 
-        double entropyAlphabetForBigramWithoutSpace = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammWithouSpace, totalWithoutSpace, "entropyAlphabetForBigramWithoutSpace: ");
+        double entropyAlphabetForBigramWithoutSpace = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammWithouSpace, totalForBigramWithoutSpacesDoubleStep, "entropyAlphabetForBigramWithoutSpace: ");
 
-        double entropyAlphabetForBigramSingleStep = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammSingleStep, total, "entropyAlphabetForBigramSingleStep: ");
+        double entropyAlphabetForBigramSingleStep = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammSingleStep, totalForBigramSingleStep, "entropyAlphabetForBigramSingleStep: ");
 
-        double entropyAlphabetForBigramWithoutSpaceSingleStep = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammWithouSpaceSingleStep, totalWithoutSpace, "entropyAlphabetForBigramWithoutSpaceSingleStep: ");
+        double entropyAlphabetForBigramWithoutSpaceSingleStep = calculateAndShowEntropyAlphabetBigram(alphabetForBigrammWithouSpaceSingleStep, totalForBigramWithoutSpacesSingleStep, "entropyAlphabetForBigramWithoutSpaceSingleStep: ");
 
 
         System.out.println("--------------------Task_3----------------------------");
@@ -249,6 +269,8 @@ public class Main {
         }
 
         entropyAlphabet = Math.abs(entropyAlphabet);
+
+        entropyAlphabet /= 2;
 
         System.out.println(desc + entropyAlphabet);
         System.out.println();
