@@ -1,5 +1,6 @@
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -99,11 +100,17 @@ public class Main {
 
     }
 
-    private static void showArray(String[][] array){
+    private static void showArray(String[][] array, int total){
         System.out.println();
+        System.out.print("     ");
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j <array.length; j++) {
-                System.out.print(array[i][j] + "    ");
+                if (i >=1 && j>=1) {
+                    String formattedDouble = new DecimalFormat("#0.00").format(0.1321231);
+                    System.out.print(new DecimalFormat("#0.000000000").format((double) Integer.parseInt(array[i][j]) / total) + "    ");
+                }
+                else
+                    System.out.print(array[i][j] + "              ");
             }
             System.out.println();
         }
@@ -176,11 +183,11 @@ public class Main {
         System.out.println();
 
         System.out.println("Array for bigram with spaces for step = 2 : ");
-        showArray(array);
+        showArray(array, totalForBigramDoubleStep);
         System.out.println();
 
         System.out.println("Array for bigram without spaces for step = 2: ");
-        showArray(arrayWithoutSpaces);
+        showArray(arrayWithoutSpaces, totalForBigramWithoutSpacesDoubleStep);
         System.out.println();
 
         String[][] arraySingleStep = new String[33][33];
@@ -191,11 +198,11 @@ public class Main {
 
         System.out.println();
         System.out.println("Array for bigram with spaces for step =1 : ");
-        showArray(arraySingleStep);
+        showArray(arraySingleStep, totalForBigramSingleStep);
         System.out.println();
 
         System.out.println("Array for bigram without spaces for step =1: ");
-        showArray(arrayWithoutSpacesSingleStep);
+        showArray(arrayWithoutSpacesSingleStep, totalForBigramWithoutSpacesSingleStep);
         System.out.println();
 
         double entropyAlphabet = calculateAndShowEntropyAlphabet(alphabet, total, "entropyAlphabet: ");
