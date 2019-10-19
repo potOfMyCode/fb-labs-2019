@@ -1,8 +1,7 @@
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Main {
     private final static int CAPACITY = 32;
@@ -76,6 +75,19 @@ public class Main {
         System.out.println(map);
     }
 
+    private static void printAlphabetMap(String desc, Map<Character, Integer> map, int total){
+        System.out.println();
+        System.out.println(desc);
+        Map<Character, String> mapFrequency = new TreeMap<>();
+        for (Map.Entry<Character, Integer> entry : map.entrySet())
+            mapFrequency.put(entry.getKey(), new DecimalFormat("#0.000000000").format((double) entry.getValue()/total));
+        System.out.println(mapFrequency);
+
+        List list = new ArrayList(mapFrequency.entrySet());
+        list.sort((Comparator<Map.Entry<Character, String>>) (a, b) -> b.getValue().compareTo(a.getValue()));
+        System.out.println("letter frquency sorted by value: " + list);
+        }
+
     private static void initArray(String[][] array, String[] alpha, Map<String, Integer> alphabet){
         for(int column = 1; column<array.length; column++){
             array[0][column] = alpha[column-1];
@@ -134,6 +146,7 @@ public class Main {
         System.out.println("total: " + total);
 
         printMap("Alphabet:", alphabet);
+        printAlphabetMap("Alphabet frquency:", alphabet, total);
 
         initAlphabetForBigram(fileData, alphabetForBigramm, 2);
         initAlphabetForBigram(fileData, alphabetForBigrammSingleStep, 1);
@@ -162,6 +175,7 @@ public class Main {
         System.out.println("total for bigram without spaces single step: " + totalForBigramWithoutSpacesSingleStep);
 
         printMap("Alphabet without space:", alphabetWithoutSpace);
+        printAlphabetMap("Alphabet without space frequency:", alphabetWithoutSpace, totalWithoutSpace);
 
         initAlphabetForBigram(fileDataWithouSpace, alphabetForBigrammWithouSpace, 2);
         initAlphabetForBigram(fileDataWithouSpace, alphabetForBigrammWithouSpaceSingleStep, 1);
