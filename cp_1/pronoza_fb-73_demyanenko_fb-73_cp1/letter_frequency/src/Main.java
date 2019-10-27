@@ -80,7 +80,7 @@ public class Main {
         System.out.println(desc);
         Map<Character, String> mapFrequency = new TreeMap<>();
         for (Map.Entry<Character, Integer> entry : map.entrySet())
-            mapFrequency.put(entry.getKey(), new DecimalFormat("#0.000000000").format((double) entry.getValue()/total));
+            mapFrequency.put(entry.getKey(), new DecimalFormat("#0.00000").format((double) entry.getValue()/total));
         System.out.println(mapFrequency);
 
         List list = new ArrayList(mapFrequency.entrySet());
@@ -119,7 +119,7 @@ public class Main {
             for (int j = 0; j <array.length; j++) {
                 if (i >=1 && j>=1) {
                     String formattedDouble = new DecimalFormat("#0.00").format(0.1321231);
-                    System.out.print(new DecimalFormat("#0.000000000").format((double) Integer.parseInt(array[i][j]) / total) + "    ");
+                    System.out.print(new DecimalFormat("#0.00000").format((double) Integer.parseInt(array[i][j]) / total) + "    ");
                 }
                 else
                     System.out.print(array[i][j] + "              ");
