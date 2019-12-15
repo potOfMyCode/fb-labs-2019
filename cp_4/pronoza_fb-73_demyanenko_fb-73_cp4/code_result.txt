@@ -1,0 +1,38 @@
+"C:\Program Files\Java\jdk1.8.0_162\bin\java.exe" -javaagent:C:\java\javaTools\IdeaU\lib\idea_rt.jar=60261:C:\java\javaTools\IdeaU\bin -Dfile.encoding=UTF-8 -classpath "C:\Program Files\Java\jdk1.8.0_162\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\ext\zipfs.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_162\jre\lib\rt.jar;C:\crypto_sem_5\fb-labs-2019\cp_4\pronoza_fb-73_demyanenko_fb-73_cp4\lab4\out\production\lab4" Main
+var7:
+p1(x)= x^23 + x^20 + x^7 + x^6 + x^5 + x^2 + 1
+p2(x)= x^20 + x^13 + x^12 + x^10 + x^6 + x^5 + x^4 + x^3 + x^2 + x + 1
+impulse function for p1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+impulse function for p2: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+Згенеровані послідовності ви можете переглянути у файлах sequenceP1.txt та sequenceP2.txt
+Period P1: 8388607
+Period P2: 349525
+P1 є примітивним поліномом, так як його період дорівнює макс.періоду(T=q^n-1)
+P2 є непримітивним та незвідним поліномом над даним полем, так як його період кратний q^n-1
+Calculate auto correlation coefficients: 
+For P1:
+d = 1 : 4194304
+d = 2 : 4194304
+d = 3 : 4194304
+d = 4 : 4194304
+d = 5 : 4194304
+d = 6 : 4194304
+d = 7 : 4194304
+d = 8 : 4194304
+d = 9 : 4194304
+
+For P2:
+d = 1 : 174592
+d = 2 : 175104
+d = 3 : 174592
+d = 4 : 174592
+d = 5 : 174592
+d = 6 : 174592
+d = 7 : 174592
+d = 8 : 175104
+d = 9 : 174592
+
+Process finished with exit code 0
+
+
+And more you can find in directory "розподіл n-грам" and in directory "lab4"(here generated sequences)
