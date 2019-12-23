@@ -4,12 +4,22 @@ import java.util.Random;
 
 public class Main {
 
+    public static final BigInteger E_FOR_GENERATING_KEYPAIR = new BigInteger("2").pow(16).add(new BigInteger("1"));
+
     public static void main(String[] args) {
 
-        BigInteger p = generatePseudoPrimeNumber(255, 256);
-        BigInteger p1 = generatePseudoPrimeNumber(255, 256);
-        BigInteger q = generatePseudoPrimeNumber(255, 256);
-        BigInteger q1 = generatePseudoPrimeNumber(255, 256);
+        BigInteger p;
+        BigInteger p1;
+        BigInteger q;
+        BigInteger q1;
+
+        do {
+            p = generatePseudoPrimeNumber(255, 256);
+            p1 = generatePseudoPrimeNumber(255, 256);
+            q = generatePseudoPrimeNumber(255, 256);
+            q1 = generatePseudoPrimeNumber(255, 256);
+        } while (!(getFiForPrimeNumbers(p, q)).gcd(E_FOR_GENERATING_KEYPAIR).equals(new BigInteger("1"))
+                || !(getFiForPrimeNumbers(p1, q1)).gcd(E_FOR_GENERATING_KEYPAIR).equals(new BigInteger("1")));
 
         if (p.multiply(q).compareTo(p1.multiply(q1)) > 0) {
             BigInteger tempP = p;
@@ -48,8 +58,6 @@ public class Main {
         }
 
         System.out.println("end");
-
-
     }
 
     static class PairKeySignature {
@@ -162,13 +170,17 @@ public class Main {
     public static KeyPair generateKeyPair(BigInteger p, BigInteger q) {
         KeyPair keyPair = new KeyPair(p, q);
         BigInteger n = p.multiply(q);
-        BigInteger fi = p.subtract(new BigInteger("1")).multiply(q.subtract(new BigInteger("1")));
-        BigInteger e = new BigInteger("2").pow(16).add(new BigInteger("1"));
+        BigInteger fi = getFiForPrimeNumbers(p, q);
+        BigInteger e = E_FOR_GENERATING_KEYPAIR;
         BigInteger d = reverseElement(e, fi);
         keyPair.openKey.setE(e);
         keyPair.openKey.setN(n);
         keyPair.privateKey.setD(d);
         return keyPair;
+    }
+
+    private static BigInteger getFiForPrimeNumbers(BigInteger p, BigInteger q) {
+        return p.subtract(new BigInteger("1")).multiply(q.subtract(new BigInteger("1")));
     }
 
     static class KeyPair {
